@@ -17,7 +17,7 @@ resource "azurerm_virtual_network" "main" {
 }
 
 # =========================
-# SUBNET
+# SUBNET---
 # =========================
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
