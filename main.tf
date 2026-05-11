@@ -109,7 +109,7 @@ resource "azurerm_linux_virtual_machine" "demo_vm" {
   admin_password = var.admin_password
 
   disable_password_authentication = false
-  
+
 
   os_disk {
     caching              = "ReadWrite"

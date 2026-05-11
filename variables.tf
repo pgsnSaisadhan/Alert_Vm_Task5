@@ -1,7 +1,7 @@
 variable "email" {
-    type = string
-    default = "saisadhankodurupaka@gmail.com"
-  
+  type    = string
+  default = "saisadhankodurupaka@gmail.com"
+
 }
 variable "admin_username" {
   type    = string
@@ -11,5 +11,5 @@ variable "admin_username" {
 variable "admin_password" {
   type      = string
   sensitive = true
-  default = "Sai@12345678"
+  default   = "Sai@12345678"
 }

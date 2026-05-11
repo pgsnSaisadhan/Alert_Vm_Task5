@@ -82,7 +82,7 @@ resource "azurerm_monitor_metric_alert" "vm_memory_warning" {
     metric_name      = "Available Memory Bytes"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 250000000  # approx 250MB (Azure uses bytes)
+    threshold        = 250000000 # approx 250MB (Azure uses bytes)
   }
 
   action {
@@ -108,7 +108,7 @@ resource "azurerm_monitor_metric_alert" "vm_memory_critical" {
     metric_name      = "Available Memory Bytes"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 100000000  # approx 100MB
+    threshold        = 100000000 # approx 100MB
   }
 
   action {
