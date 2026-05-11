@@ -1,8 +1,8 @@
 # =========================
-# RESOURCE GROUP
+# RESOURCE GROUP (EXISTING)
 # =========================
 data "azurerm_resource_group" "app_rg" {
-  name     = "monitor-demo-rg"
+  name = "monitor-demo-rg"
 }
 
 # =========================
@@ -26,7 +26,7 @@ resource "azurerm_subnet" "internal" {
 }
 
 # =========================
-# NETWORK SECURITY GROUP
+# NSG
 # =========================
 resource "azurerm_network_security_group" "vm_nsg" {
   name                = "vm-nsg"
@@ -44,18 +44,6 @@ resource "azurerm_network_security_group" "vm_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 1002
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
 }
 
 # =========================
@@ -69,7 +57,7 @@ resource "azurerm_public_ip" "vm_ip" {
 }
 
 # =========================
-# NETWORK INTERFACE
+# NIC
 # =========================
 resource "azurerm_network_interface" "main" {
   name                = "demo-nic"
@@ -100,14 +88,12 @@ resource "azurerm_linux_virtual_machine" "demo_vm" {
   location            = data.azurerm_resource_group.app_rg.location
   resource_group_name = data.azurerm_resource_group.app_rg.name
 
-  network_interface_ids = [azurerm_network_interface.main.id]
-  size                  = "Standard_B1s"
-
-  computer_name  = "demovm"
-  admin_username = var.admin_username
-  admin_password = var.admin_password
-
+  size                = "Standard_B1s"
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
   disable_password_authentication = false
+
+  network_interface_ids = [azurerm_network_interface.main.id]
 
   os_disk {
     caching              = "ReadWrite"
@@ -124,21 +110,4 @@ resource "azurerm_linux_virtual_machine" "demo_vm" {
   depends_on = [
     azurerm_network_interface_security_group_association.example
   ]
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y nginx",
-      "echo '<html><body><h1>#AZTerraform is Awesome! Check alert in your mail</h1></body></html>' | sudo tee /var/www/html/index.html",
-      "sudo systemctl start nginx",
-      "sudo systemctl enable nginx"
-    ]
-
-    connection {
-      type     = "ssh"
-      user     = var.admin_username
-      password = var.admin_password
-      host     = azurerm_public_ip.vm_ip.ip_address
-    }
-  }
 }
