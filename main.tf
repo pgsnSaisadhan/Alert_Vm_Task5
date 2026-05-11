@@ -2,7 +2,7 @@
 # RESOURCE GROUP
 # =========================
 resource "azurerm_resource_group" "app_rg" {
-  name     = "monitor-demo-rg4"
+  name     = "monitor-demo-rg5"
   location = "westus2"
 }
 
