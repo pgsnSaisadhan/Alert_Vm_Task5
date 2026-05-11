@@ -1,15 +1,15 @@
-variable "email" {
-  type    = string
-  default = "saisadhankodurupaka@gmail.com"
-
+variable "location" {
+  default = "Central India"
 }
+
+variable "resource_group_name" {
+  default = "sai-rg"
+}
+
 variable "admin_username" {
-  type    = string
   default = "azureuser"
 }
 
 variable "admin_password" {
-  type      = string
-  sensitive = true
-  default   = "Sai@12345678"
+  default = "Sai@123456789"
 }
