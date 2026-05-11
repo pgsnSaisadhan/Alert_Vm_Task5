@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "app_rg" {
 }
 
 # =========================
-# VIRTUAL NETWORK-
+# VIRTUAL NETWORK-'
 # =========================
 resource "azurerm_virtual_network" "main" {
   name                = "demo-network"
