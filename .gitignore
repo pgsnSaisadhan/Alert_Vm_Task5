@@ -4,8 +4,5 @@
 *.tfstate.*
 .terraform.lock.hcl
 
-# sensitive
+# sensitive files
 terraform.tfvars
-
-# OS
-.DS_Store
