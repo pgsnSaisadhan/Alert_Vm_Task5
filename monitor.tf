@@ -3,7 +3,7 @@
 # =========================
 resource "azurerm_monitor_action_group" "main" {
   name                = "example-actiongroup"
-  resource_group_name = azurerm_resource_group.app_rg.name
+  resource_group_name = data.azurerm_resource_group.app_rg.name
   short_name          = "exampleact"
 
   email_receiver {
@@ -17,7 +17,7 @@ resource "azurerm_monitor_action_group" "main" {
 # =========================
 resource "azurerm_monitor_metric_alert" "vm_cpu_warning" {
   name                = "vm-cpu-warning"
-  resource_group_name = azurerm_resource_group.app_rg.name
+  resource_group_name = data.azurerm_resource_group.app_rg.name
   scopes              = [azurerm_linux_virtual_machine.demo_vm.id]
   description         = "CPU > 75%"
 
@@ -43,7 +43,7 @@ resource "azurerm_monitor_metric_alert" "vm_cpu_warning" {
 # =========================
 resource "azurerm_monitor_metric_alert" "vm_cpu_critical" {
   name                = "vm-cpu-critical"
-  resource_group_name = azurerm_resource_group.app_rg.name
+  resource_group_name = data.azurerm_resource_group.app_rg.name
   scopes              = [azurerm_linux_virtual_machine.demo_vm.id]
   description         = "CPU > 95%"
 
@@ -69,7 +69,7 @@ resource "azurerm_monitor_metric_alert" "vm_cpu_critical" {
 # =========================
 resource "azurerm_monitor_metric_alert" "vm_memory_warning" {
   name                = "vm-memory-warning"
-  resource_group_name = azurerm_resource_group.app_rg.name
+  resource_group_name = data.azurerm_resource_group.app_rg.name
   scopes              = [azurerm_linux_virtual_machine.demo_vm.id]
   description         = "Memory low warning"
 
@@ -95,7 +95,7 @@ resource "azurerm_monitor_metric_alert" "vm_memory_warning" {
 # =========================
 resource "azurerm_monitor_metric_alert" "vm_memory_critical" {
   name                = "vm-memory-critical"
-  resource_group_name = azurerm_resource_group.app_rg.name
+  resource_group_name = data.azurerm_resource_group.app_rg.name
   scopes              = [azurerm_linux_virtual_machine.demo_vm.id]
   description         = "Memory critically low"
 
