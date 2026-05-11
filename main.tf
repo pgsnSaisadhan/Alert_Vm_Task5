@@ -14,13 +14,14 @@ resource "azurerm_virtual_network" "main" {
   location            = data.azurerm_resource_group.app_rg.location
   resource_group_name = data.azurerm_resource_group.app_rg.name
 }
+
 # =========================
 # SUBNET
 # =========================
 resource "azurerm_subnet" "internal" {
   name                 = "internal"
   resource_group_name  = data.azurerm_resource_group.app_rg.name
-  virtual_network_name = data.azurerm_virtual_network.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
@@ -77,9 +78,9 @@ resource "azurerm_network_interface" "main" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = data.azurerm_subnet.internal.id
+    subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = data.azurerm_public_ip.vm_ip.id
+    public_ip_address_id          = azurerm_public_ip.vm_ip.id
   }
 }
 
@@ -96,8 +97,8 @@ resource "azurerm_network_interface_security_group_association" "example" {
 # =========================
 resource "azurerm_linux_virtual_machine" "demo_vm" {
   name                = "demo-vm"
-  location            = azurerm_resource_group.app_rg.location
-  resource_group_name = azurerm_resource_group.app_rg.name
+  location            = data.azurerm_resource_group.app_rg.location
+  resource_group_name = data.azurerm_resource_group.app_rg.name
 
   network_interface_ids = [azurerm_network_interface.main.id]
   size                  = "Standard_B1s"
