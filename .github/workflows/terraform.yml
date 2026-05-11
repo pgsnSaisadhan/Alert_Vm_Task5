@@ -2,6 +2,9 @@ name: Azure VM Stress Test Pipeline
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   terraform:
@@ -19,10 +22,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -input=false
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -input=false
         env:
           ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
@@ -32,8 +35,7 @@ jobs:
       - name: Get VM Public IP
         id: get_ip
         run: |
-          VM_IP=$(terraform output -raw vm_public_ip)
-          echo "vm_ip=$VM_IP" >> $GITHUB_OUTPUT
+          echo "vm_ip=$(terraform output -raw vm_public_ip)" >> $GITHUB_OUTPUT
 
   stress-test:
     name: Run Stress Test on VM
@@ -42,18 +44,22 @@ jobs:
 
     steps:
       - name: Install SSH Client
-        run: sudo apt-get install sshpass -y
+        run: sudo apt-get update && sudo apt-get install -y openssh-client
 
-      - name: SSH into VM and run stress
+      - name: Wait for VM to be ready
+        run: sleep 30
+
+      - name: SSH into VM and run stress test
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ needs.terraform.outputs.vm_ip }}
           username: ${{ secrets.VM_USER }}
           password: ${{ secrets.VM_PASSWORD }}
+          timeout: 10m
           script: |
             echo "Installing stress tool..."
             sudo apt update -y
-            sudo apt install stress -y
+            sudo apt install -y stress
 
             echo "CPU Stress..."
             stress --cpu 8 --timeout 300
