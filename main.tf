@@ -3,7 +3,7 @@
 # =========================
 resource "azurerm_resource_group" "app_rg" {
   name     = "monitor-demo-rg5"
-  location = "westus2"
+  location = "Central US"
 }
 
 # =========================
