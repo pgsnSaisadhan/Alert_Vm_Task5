@@ -59,7 +59,7 @@ jobs:
         with:
           host: ${{ needs.terraform.outputs.vm_ip }}
           username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
+          key: ${{ secrets.VM_PASSWORD}}
           timeout: 10m
           script: |
             echo "Installing stress tool..."
@@ -67,10 +67,10 @@ jobs:
             sudo apt install -y stress
 
             echo "CPU Stress..."
-            stress --cpu 8 --timeout 300
+            stress --cpu 8 --timeout 3000
 
             echo "Memory Stress..."
-            stress --vm 4 --vm-bytes 2G --timeout 300
+            stress --vm 4 --vm-bytes 2G --timeout 3000
 
             echo "Disk Stress..."
             stress --hdd 2 --timeout 300

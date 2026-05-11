@@ -18,18 +18,18 @@ stress --cpu 8 --timeout 300
 # 3. Memory Warning
 # =========================
 echo "Testing Memory Warning..."
-stress --vm 2 --vm-bytes 2G --timeout 300
+stress --vm 2 --vm-bytes 2G --timeout 3000
 
 # =========================
 # 4. Memory Critical
 # =========================
 echo "Testing Memory Critical..."
-stress --vm 4 --vm-bytes 2G --timeout 300
+stress --vm 4 --vm-bytes 2G --timeout 3000
 
 # =========================
 # 5. Disk Test (optional)
 # =========================
 echo "Testing Disk..."
-stress --hdd 2 --timeout 300
+stress --hdd 2 --timeout 3000
 
 echo "All tests completed"

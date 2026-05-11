@@ -11,4 +11,5 @@ variable "admin_username" {
 variable "admin_password" {
   type      = string
   sensitive = true
+  default = "Sai@12345678"
 }
