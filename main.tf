@@ -2,7 +2,7 @@
 # RESOURCE GROUP
 # =========================
 resource "azurerm_resource_group" "app_rg" {
-  name     = "monitor-demo-rg1"
+  name     = "monitor-demo-rg2"
   location = "East US"
 }
 
