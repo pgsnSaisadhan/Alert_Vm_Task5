@@ -1,51 +1,11 @@
-# =========================
-# Terraform files
-# =========================
+# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
-crash.log
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
 .terraform.lock.hcl
 
-# =========================
-# Terraform variable files (VERY IMPORTANT)
-# =========================
+# sensitive
 terraform.tfvars
-*.tfvars
-*.tfvars.json
 
-# =========================
-# Sensitive files
-# =========================
-*.pem
-*.key
-id_rsa
-id_rsa.pub
-
-# =========================
-# OS files
-# =========================
+# OS
 .DS_Store
-Thumbs.db
-
-# =========================
-# Logs
-# =========================
-*.log
-
-# =========================
-# IDE files
-# =========================
-.vscode/
-.idea/
-*.swp
-
-# =========================
-# Python (if used later)
-# =========================
-__pycache__/
-*.pyc
