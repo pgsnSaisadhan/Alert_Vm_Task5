@@ -31,6 +31,11 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+          TF_VAR_admin_password: ${{ secrets.VM_PASSWORD }}
+          TF_VAR_admin_username: ${{ secrets.VM_USER }}
+
+      - name: Wait for Terraform output
+        run: sleep 20
 
       - name: Get VM Public IP
         id: get_ip
@@ -43,18 +48,18 @@ jobs:
     needs: terraform
 
     steps:
+      - name: Wait for VM Boot
+        run: sleep 60
+
       - name: Install SSH Client
         run: sudo apt-get update && sudo apt-get install -y openssh-client
-
-      - name: Wait for VM to be ready
-        run: sleep 30
 
       - name: SSH into VM and run stress test
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ needs.terraform.outputs.vm_ip }}
           username: ${{ secrets.VM_USER }}
-          password: ${{ secrets.VM_PASSWORD }}
+          key: ${{ secrets.VM_SSH_KEY }}
           timeout: 10m
           script: |
             echo "Installing stress tool..."

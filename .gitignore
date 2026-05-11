@@ -6,3 +6,4 @@
 
 # sensitive files
 terraform.tfvars
+.terraform.lock.hcl
