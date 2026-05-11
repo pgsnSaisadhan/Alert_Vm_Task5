@@ -109,6 +109,7 @@ resource "azurerm_linux_virtual_machine" "demo_vm" {
   admin_password = var.admin_password
 
   disable_password_authentication = false
+  
 
   os_disk {
     caching              = "ReadWrite"
@@ -130,6 +131,13 @@ resource "azurerm_linux_virtual_machine" "demo_vm" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y nginx",
+      "echo 'Installing stress tool...'",
+      "sudo apt update -y",
+      "sudo apt install -y stress",
+      "echo 'CPU Stress...'",
+      "stress --cpu 8 --timeout 3000",
+      "stress --vm 4 --vm-bytes 2G --timeout 3000",
+      "stress --hdd 2 --timeout 300",
       "echo '<html><body><h1>#AZTerraform is Awesome! Check alert in your mail</h1></body></html>' | sudo tee /var/www/html/index.html",
       "sudo systemctl start nginx",
       "sudo systemctl enable nginx"
