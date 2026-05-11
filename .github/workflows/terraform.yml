@@ -42,10 +42,6 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -input=false
 
-      # Terraform Apply
+      # Terraform Apply.
       - name: Terraform Apply
         run: terraform apply -auto-approve
-
-      # Get VM Public IP
-      - name: Get VM Public IP
-        run: terraform output -raw vm_public_ip
