@@ -1,9 +1,8 @@
 # =========================
 # RESOURCE GROUP
 # =========================
-resource "azurerm_resource_group" "app_rg" {
+data "azurerm_resource_group" "app_rg" {
   name     = "monitor-demo-rg"
-  location = "East US"
 }
 
 # =========================
