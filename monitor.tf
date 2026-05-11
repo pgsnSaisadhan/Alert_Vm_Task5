@@ -1,3 +1,6 @@
+# =========================
+# ACTION GROUP
+# =========================
 resource "azurerm_monitor_action_group" "main" {
   name                = "example-actiongroup"
   resource_group_name = azurerm_resource_group.app_rg.name
@@ -8,6 +11,10 @@ resource "azurerm_monitor_action_group" "main" {
     email_address = var.email
   }
 }
+
+# =========================
+# VM CPU WARNING
+# =========================
 resource "azurerm_monitor_metric_alert" "vm_cpu_warning" {
   name                = "vm-cpu-warning"
   resource_group_name = azurerm_resource_group.app_rg.name
@@ -30,6 +37,10 @@ resource "azurerm_monitor_metric_alert" "vm_cpu_warning" {
     action_group_id = azurerm_monitor_action_group.main.id
   }
 }
+
+# =========================
+# VM CPU CRITICAL
+# =========================
 resource "azurerm_monitor_metric_alert" "vm_cpu_critical" {
   name                = "vm-cpu-critical"
   resource_group_name = azurerm_resource_group.app_rg.name
@@ -52,70 +63,52 @@ resource "azurerm_monitor_metric_alert" "vm_cpu_critical" {
     action_group_id = azurerm_monitor_action_group.main.id
   }
 }
+
+# =========================
+# VM MEMORY WARNING
+# =========================
 resource "azurerm_monitor_metric_alert" "vm_memory_warning" {
   name                = "vm-memory-warning"
   resource_group_name = azurerm_resource_group.app_rg.name
   scopes              = [azurerm_linux_virtual_machine.demo_vm.id]
-  description         = "Available memory < 25"
+  description         = "Memory low warning"
+
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  severity    = 2
 
   criteria {
     metric_namespace = "Microsoft.Compute/virtualMachines"
     metric_name      = "Available Memory Bytes"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 25
+    threshold        = 250000000  # approx 250MB (Azure uses bytes)
   }
 
   action {
     action_group_id = azurerm_monitor_action_group.main.id
   }
 }
+
+# =========================
+# VM MEMORY CRITICAL
+# =========================
 resource "azurerm_monitor_metric_alert" "vm_memory_critical" {
   name                = "vm-memory-critical"
   resource_group_name = azurerm_resource_group.app_rg.name
   scopes              = [azurerm_linux_virtual_machine.demo_vm.id]
-  description         = "Available memory < 5"
+  description         = "Memory critically low"
+
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  severity    = 1
 
   criteria {
     metric_namespace = "Microsoft.Compute/virtualMachines"
     metric_name      = "Available Memory Bytes"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 5
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.main.id
-  }
-}
-resource "azurerm_monitor_metric_alert" "psql_memory_warning" {
-  name                = "psql-memory-warning"
-  resource_group_name = azurerm_resource_group.app_rg.name
-  scopes              = [azurerm_postgresql_flexible_server.psql.id]
-
-  criteria {
-    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-    metric_name      = "memory_percent"
-    aggregation      = "Average"
-    operator         = "GreaterThan"
-    threshold        = 75
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.main.id
-  }
-}
-resource "azurerm_monitor_metric_alert" "psql_memory_critical" {
-  name                = "psql-memory-critical"
-  resource_group_name = azurerm_resource_group.app_rg.name
-  scopes              = [azurerm_postgresql_flexible_server.psql.id]
-
-  criteria {
-    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-    metric_name      = "memory_percent"
-    aggregation      = "Average"
-    operator         = "GreaterThan"
-    threshold        = 95
+    threshold        = 100000000  # approx 100MB
   }
 
   action {
